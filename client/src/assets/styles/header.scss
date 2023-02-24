@@ -1,0 +1,23 @@
+header {
+    display: flex;
+    flex-direction: column;
+    background: url("../images/banner.jpeg");
+    h1 {
+        text-align: center;
+        color: white;
+    }
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        .navlink {
+            text-align: center;
+            width: 100px;
+            line-height: 40px;
+            color: white;
+            background-color: #529e3b;
+            text-decoration: none;
+        }
+    }
+
+}
