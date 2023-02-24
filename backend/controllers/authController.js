@@ -18,14 +18,32 @@ export const register = async (req,res) => {
                     isAdmin: email === "sylval49@gmail.com"
                 });
                 user.save();
-                res.send(user)
+                res.status(201).json({message:"Enregistrement effectué"});
             });
         }
         else {
-            res.send("utilisateur déjà existant")
+            res.status(409).json({message:"utilisateur déjà existant"});
         }
     }
     catch {
-        res.send("erreur")
+        res.status(400).json({message:"erreur"});
+    }
+ }
+
+ export const login = async (req,res) => {
+
+    const user = await User.findOne({ email: req.body.email });
+    if (user){
+        bcrypt.compare(
+            req.body.password,
+            user.password,
+            function (err, result) {
+                if (result) {
+                    res.status(200).json({message:"connexion réussi"});
+                } else {
+                    res.status(401).json({message:"connexion reffusée"});
+                }
+            }
+        );
     }
  }
