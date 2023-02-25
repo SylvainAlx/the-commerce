@@ -6,6 +6,7 @@ const Header = () => {
         <header>
             <h1>Thé Commerce !</h1>
             <nav>
+                <Link className="navlink" to="/">accueil</Link>
                 <Link className="navlink" to="/login">se connecter</Link>
                 <Link className="navlink" to="/register">s'inscrire</Link>
             </nav>
