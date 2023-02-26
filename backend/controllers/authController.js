@@ -9,10 +9,9 @@ export const register = async (req,res) => {
         password,
         isAdmin: email === "sylval49@gmail.com"
     });
-    const jwt = user.createJWT();
     user.save()
     .then ((user) => {
-        res.status(201).json({message:"Enregistrement effectué",user,jwt});
+        res.status(201).json({message:"Enregistrement effectué"});
     })
     .catch((error) => {
         res.status(400).json({error});
