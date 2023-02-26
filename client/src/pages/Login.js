@@ -1,15 +1,38 @@
-import { useState } from "react"
-import LoginAxios from "../controllers/LoginController.js"
+import { useEffect, useState } from "react"
+import axios from "axios";
+import { saveJwt } from "../controllers/Jwt.js";
+import {useDispatch, useSelector} from "react-redux"
+import { setUser } from "../store/slices/userSlice.js";
 
 const Login = () => {
 
     const [email,setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [data,setData] = useState({})
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.user)
+
+    useEffect(()=>{
+        console.log(user)
+    },[user])
+
+
+    const loginAxios = async (payload) => {
+        axios.post("http://localhost:9875/login", payload)
+            .then(response => {
+                saveJwt(response)
+                dispatch(setUser(response.data.user))
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
 
     const handleClick = (e) => {
         e.preventDefault()
         console.log(email+" "+password)
-        LoginAxios({email,password})
+        loginAxios({email,password})
 
     }
 
