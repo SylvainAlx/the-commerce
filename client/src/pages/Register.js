@@ -13,7 +13,7 @@ const Register = () => {
 
 
     const registerAxios = async (payload) => {
-        axios.post("http://localhost:9875/register", payload)
+        axios.post("http://localhost:9875/auth/register", payload)
             .then(response => {
                 localStorage.setItem('jwt', response.data.jwt)
                 dispatch(setUser(response.data.user))

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import express from "express";
-import router from "./routers/router.js";
+import authRouter from "./routers/authRouter.js";
+import usersRouter from "./routers/usersRouter.js";
 import cors from "cors"
 
 //config serveur
@@ -25,7 +26,8 @@ mongoose.connection.on("error", () => {
     console.log("Erreur lors de la connexion à la base de données");
 });
 mongoose.connection.on("open", () => {
-    app.use("/", router);
+    app.use("/auth", authRouter);
+    app.use("/users", usersRouter);
     console.log("connexion à la base de données");
 });
 

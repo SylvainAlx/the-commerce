@@ -17,7 +17,7 @@ const App = () => {
 		
         const jwt = localStorage.getItem('jwt')
         if(jwt){
-          fetch('http://localhost:9875/verify', {
+          fetch('http://localhost:9875/auth/verify', {
             headers: {Authentication: `Bearer ${jwt}`}
           })
           .then(resp => resp.json())
@@ -44,7 +44,10 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/admin" element={<Admin />} />
+          {
+            user.isAdmin &&
+            <Route path="/admin" element={<Admin />} />
+          }
         </Routes>
       </BrowserRouter>
     </div>

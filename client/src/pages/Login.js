@@ -13,7 +13,7 @@ const Login = () => {
 
 
     const loginAxios = async (payload) => {
-        axios.post("http://localhost:9875/login", payload)
+        axios.post("http://localhost:9875/auth/login", payload)
             .then(response => {
                 localStorage.setItem('jwt', response.data.jwt)
                 dispatch(setUser(response.data.user))
