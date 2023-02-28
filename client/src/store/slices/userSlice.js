@@ -3,12 +3,14 @@ import {createSlice} from '@reduxjs/toolkit'
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
-        user: null
+        email: "",
+        isAdmin: false
     },
     reducers: {
         setUser: (state, action) => {
             return {
-                user: action.payload
+                email: action.payload.email,
+                isAdmin: action.payload.isAdmin
             }
         }
     }

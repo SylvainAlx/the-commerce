@@ -33,7 +33,8 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
 userSchema.methods.createJWT = function () {
     return jwt.sign({
         id: this._id,
-        email: this.email
+        email: this.email,
+        isAdmin: this.isAdmin
     }, 'key_secret', {expiresIn: '24h'})
 }
 

@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react"
+import {useState } from "react"
 import axios from "axios";
-import { saveJwt } from "../controllers/Jwt.js";
-import {useDispatch, useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
 import { setUser } from "../store/slices/userSlice.js";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 
     const [email,setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [data,setData] = useState({})
     const dispatch = useDispatch()
-    const user = useSelector(state => state.user)
-
-    useEffect(()=>{
-        console.log(user)
-    },[user])
+    const navigate = useNavigate()
 
 
     const loginAxios = async (payload) => {
         axios.post("http://localhost:9875/login", payload)
             .then(response => {
-                saveJwt(response)
+                localStorage.setItem('jwt', response.data.jwt)
                 dispatch(setUser(response.data.user))
+                navigate("/")
             })
             .catch(error => {
                 console.log(error);
@@ -31,7 +27,6 @@ const Login = () => {
 
     const handleClick = (e) => {
         e.preventDefault()
-        console.log(email+" "+password)
         loginAxios({email,password})
 
     }
@@ -50,7 +45,7 @@ const Login = () => {
             <fieldset>
                 <legend>Connectez-vous</legend>
                 <input type="email" name="email" placeholder="e-mail" value={email} required onChange={handleChange} />
-                <input type="password" name="password" placeholder="mot de passe" value={password} required onChange={handleChange} />
+                <input type="password" name="password" autoComplete="on" placeholder="mot de passe" value={password} required onChange={handleChange} />
                 <input type="submit" value="se connecter" onClick={handleClick}/> 
             </fieldset>
         </form>
