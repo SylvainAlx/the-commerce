@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
 import express from "express";
 import authRouter from "./routers/authRouter.js";
-import usersRouter from "./routers/usersRouter.js";
-import cors from "cors"
+import adminRouter from "./routers/adminRouter.js";
+import cors from "cors";
+import { verifyJwt, isAdmin } from "./middlewares/authMiddleware.js";
 
 //config serveur
 const app = express();
 const PORT = 9875;
 
 //auth cors
-app.use(cors())
+app.use(cors());
 //bases
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,7 +28,7 @@ mongoose.connection.on("error", () => {
 });
 mongoose.connection.on("open", () => {
     app.use("/auth", authRouter);
-    app.use("/users", usersRouter);
+    app.use("/admin", [verifyJwt], [isAdmin], adminRouter);
     console.log("connexion à la base de données");
 });
 
