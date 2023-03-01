@@ -15,14 +15,19 @@ const Admin = () => {
     }, [users]);
 
     const setAdmin = (e) => {
+        const jwt = localStorage.getItem("jwt");
         const email = e.target.value;
         const id = e.target.id;
-        axios
-            .post("http://localhost:9875/admin/setadmin", {
+        fetch("http://localhost:9875/admin/setadmin", {
+            method: "POST",
+            headers: { authorization: `Bearer ${jwt}` },
+            body: {
                 email,
                 isAdmin: !users[id].isAdmin,
-            })
+            },
+        })
             .then((response) => {
+                console.log(response);
                 const update = response.data;
                 const utilisateurs = users;
                 utilisateurs[id] = update;
