@@ -23,7 +23,7 @@ export const createProduct = async (req,res) => {
             price
         });
         product.save();
-        res.send(product)
+        res.status(201)
     } catch(err) {
         console.log(
             "ajout d'un produit impossible"
