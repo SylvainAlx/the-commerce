@@ -1,29 +1,36 @@
 import User from "../models/userSchema.js";
+import Product from "../models/productSchema.js";
 
 export const getUsers = async (req, res) => {
-    const users = await User.find();
-    res.send(users);
-};
-
-export const admin = async (req, res) => {
     try {
-        const user = await User.updateOne(
-            { email: req.body.email },
-            { $set: { isAdmin: req.body.isAdmin } }
-        );
-        res.send(user);
-    } catch (e) {
-        res.send(e);
+        const users = await User.find();
+        res.send(users);
+    }
+    catch(e){
+        res.send(e)
     }
 };
 
-export const deleteUser = async (req, res) => {
-    const ID = req.body.id;
-    User.findByIdAndDelete(ID, (err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send("utilisateur supprimé");
-        }
-    });
-};
+export const createProduct = async (req,res) => {
+
+    const {name,description,quantity,price} = req.body
+
+    try {
+        const product = new Product({
+            name,
+            description,
+            quantity,
+            price
+        });
+        product.save();
+        res.send(product)
+    } catch(err) {
+        console.log(
+            "ajout d'un produit impossible"
+        );
+    }
+}
+
+export const deleteProduct = async (req,res) => {
+
+}

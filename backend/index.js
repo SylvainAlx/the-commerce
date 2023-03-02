@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import express from "express";
 import authRouter from "./routers/authRouter.js";
 import adminRouter from "./routers/adminRouter.js";
+import publicRouter from "./routers/publicRouter.js";
 import cors from "cors";
 import { verifyJwt, isAdmin } from "./middlewares/authMiddleware.js";
 
@@ -29,6 +30,7 @@ mongoose.connection.on("error", () => {
 mongoose.connection.on("open", () => {
     app.use("/auth", authRouter);
     app.use("/admin", [verifyJwt], [isAdmin], adminRouter);
+    app.use("/public", publicRouter)
     console.log("connexion à la base de données");
 });
 

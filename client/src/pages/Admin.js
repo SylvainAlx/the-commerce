@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+//import { useDispatch, useSelector } from "react-redux";
 
 const Admin = () => {
     const [users, setUsers] = useState([]);
+    const [products, setProducts] = useState([]);
+
+    useEffect(()=> {
+        fetch("http://localhost:9875/public/getproducts")
+            .then((resp) => resp.json())
+            .then((json) => {
+                setProducts(json)
+            })
+            .catch((e) => console.log(e));
+    },[])
 
     useEffect(() => {
         const jwt = localStorage.getItem("jwt");
@@ -12,53 +22,29 @@ const Admin = () => {
             .then((resp) => resp.json())
             .then((json) => setUsers(json))
             .catch((e) => console.log(e));
-    }, [users]);
+    }, []);
 
-    const setAdmin = (e) => {
-        const jwt = localStorage.getItem("jwt");
-        const email = e.target.value;
-        const id = e.target.id;
-        fetch("http://localhost:9875/admin/setadmin", {
-            method: "POST",
-            headers: { authorization: `Bearer ${jwt}` },
-            body: {
-                email,
-                isAdmin: !users[id].isAdmin,
-            },
-        })
-            .then((response) => {
-                console.log(response);
-                const update = response.data;
-                const utilisateurs = users;
-                utilisateurs[id] = update;
-                setUsers(utilisateurs);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+    const handleClick = (e) => {
+        e.preventDefault()
+        console.log(e.target.id)
+    }
 
-    const deleteUser = (e) => {
-        const id = e.target.id;
-        axios
-            .post("http://localhost:9875/admin/delete", { id })
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+    const handleChange = (e) => {
+        
+
+    }
+
 
     return (
+        <>
+        <h2>Page d'administration</h2>
         <div className="container">
-            <h2>Page d'administration</h2>
+            
             <section>
                 <h3>Utilisateurs</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>numéro</th>
                             <th>email</th>
                             <th>administrateur</th>
                         </tr>
@@ -67,46 +53,36 @@ const Admin = () => {
                         {users.map((user, i) => {
                             return (
                                 <tr key={i}>
-                                    <td>{i}</td>
                                     <td>{user.email}</td>
                                     <td>{user.isAdmin ? "oui" : "non"}</td>
-                                    {!user.isAdmin ? (
-                                        <td>
-                                            <button
-                                                value={user.email}
-                                                id={i}
-                                                onClick={setAdmin}
-                                            >
-                                                RENDRE ADMIN
-                                            </button>
-                                        </td>
-                                    ) : (
-                                        <td>
-                                            <button
-                                                value={user.email}
-                                                id={i}
-                                                onClick={setAdmin}
-                                            >
-                                                RETIRER ADMIN
-                                            </button>
-                                        </td>
-                                    )}
-                                    <td>
-                                        <button
-                                            value={user.email}
-                                            id={user._id}
-                                            onClick={deleteUser}
-                                        >
-                                            SUPPRIMER
-                                        </button>
-                                    </td>
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
             </section>
+            <section>
+                <h3>Articles</h3>
+                <main>
+                    <a href="/admin/createproduct">CRER UN PRODUIT</a>
+                    {products.map((product, i) => {
+                        return (
+                            <form key={i}>
+                                <fieldset>
+                                <legend><a href={`/product/${i}`}>Article n°{i}</a></legend>
+                                <input type="text" id={i} name="name" value={product.name} onChange={handleChange}/>
+                                <textarea id={i} name="description" onChange={handleChange} value={product.description}/>
+                                <input id={i} name="quantity" type="number" value={product.quantity} onChange={handleChange}/>
+                                <input id={i} type="checkbox" onChange={handleChange}/>
+                                <input id={i} type="submit" value="APPLIQUER" onClick={handleClick}/>
+                                </fieldset>
+                            </form>
+                        );
+                    })}
+                </main>
+            </section>
         </div>
+        </>
     );
 };
 

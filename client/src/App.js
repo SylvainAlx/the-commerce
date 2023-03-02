@@ -4,14 +4,19 @@ import Register from "./pages/Register.js";
 import Login from "./pages/Login.js";
 import Home from "./pages/Home.js";
 import Admin from "./pages/Admin.js";
+import Product from "./pages/Product.js";
+import CreateProduct from "./pages/CreateProduct.js";
 import "./assets/styles/app.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/slices/userSlice.js";
 
 const App = () => {
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+    const [products, setProducts] = useState([]);
 
+    //vérification du client
     useEffect(() => {
         const jwt = localStorage.getItem("jwt");
         if (jwt) {
@@ -25,11 +30,15 @@ const App = () => {
         }
     }, []);
 
-    const user = useSelector((state) => state.user);
-
+    //récupération des produits
     useEffect(() => {
-        console.log(user);
-    }, [user]);
+        fetch("http://localhost:9875/public/getproducts")
+            .then((resp) => resp.json())
+            .then((json) => {
+                setProducts(json)
+            })
+            .catch((e) => console.log(e));
+    }, []);
 
     return (
         <div className="App">
@@ -37,10 +46,14 @@ const App = () => {
                 <Header />
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/product/:id" element={<Product />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />
                     {user.isAdmin && (
+                        <>
                         <Route path="/admin" element={<Admin />} />
+                        <Route path="/admin/createproduct" element={<CreateProduct />} />
+                        </>
                     )}
                 </Routes>
             </BrowserRouter>
