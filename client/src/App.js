@@ -6,6 +6,7 @@ import Home from "./pages/Home.js";
 import Admin from "./pages/Admin.js";
 import Product from "./pages/Product.js";
 import CreateProduct from "./pages/CreateProduct.js";
+import UpdateProduct from "./pages/UpdateProduct.js";
 import "./assets/styles/app.scss";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +15,6 @@ import { setUser } from "./store/slices/userSlice.js";
 const App = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
-    const [products, setProducts] = useState([]);
 
     //vérification du client
     useEffect(() => {
@@ -30,15 +30,6 @@ const App = () => {
         }
     }, []);
 
-    //récupération des produits
-    useEffect(() => {
-        fetch("http://localhost:9875/public/getproducts")
-            .then((resp) => resp.json())
-            .then((json) => {
-                setProducts(json)
-            })
-            .catch((e) => console.log(e));
-    }, []);
 
     return (
         <div className="App">
@@ -53,6 +44,7 @@ const App = () => {
                         <>
                         <Route path="/admin" element={<Admin />} />
                         <Route path="/admin/createproduct" element={<CreateProduct />} />
+                        <Route path="/admin/updateproduct/:id" element={<UpdateProduct />} />
                         </>
                     )}
                 </Routes>

@@ -5,7 +5,7 @@ import adminRouter from "./routers/adminRouter.js";
 import publicRouter from "./routers/publicRouter.js";
 import cors from "cors";
 import { verifyJwt, isAdmin } from "./middlewares/authMiddleware.js";
-import bodyParser from "body-parser";
+//import bodyParser from "body-parser";
 
 
 //config serveur
@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 
 //dossier des statics
 app.use(express.static("public"));

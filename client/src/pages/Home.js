@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom"
 
 const Home = () => {
 
@@ -20,7 +21,7 @@ const Home = () => {
                 {products.map((product,i) => {
                     return (
                         <article key={i}>
-                            <h4><a href={`/product/${i}`}>{product.name}</a></h4>
+                            <h4><Link to={`/product/${i}`}>{product.name}</Link></h4>
                             <h5>{product.price}€</h5>
                             <em>Quantité : {product.quantity}</em>
                         </article>

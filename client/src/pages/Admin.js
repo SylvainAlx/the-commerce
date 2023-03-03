@@ -1,36 +1,56 @@
 import { useEffect, useState } from "react";
-//import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom"
 
 const Admin = () => {
+
+    const navigate = useNavigate()
+
     const [users, setUsers] = useState([]);
     const [products, setProducts] = useState([]);
 
-    useEffect(()=> {
+    const getproducts = () => {
         fetch("http://localhost:9875/public/getproducts")
             .then((resp) => resp.json())
             .then((json) => {
                 setProducts(json)
             })
             .catch((e) => console.log(e));
-    },[])
-
-    useEffect(() => {
+    }
+    const getUsers = () => {
         const jwt = localStorage.getItem("jwt");
-        fetch("http://localhost:9875/admin/all", {
+        fetch("http://localhost:9875/admin/getusers", {
             headers: { authorization: `Bearer ${jwt}` },
         })
             .then((resp) => resp.json())
             .then((json) => setUsers(json))
             .catch((e) => console.log(e));
-    }, []);
-
-    const handleClick = (e) => {
-        e.preventDefault()
-        console.log(e.target.id)
     }
 
-    const handleChange = (e) => {
-        
+    useEffect(()=> {
+        getUsers()
+        getproducts()
+    },[])
+
+    const handleUpdate = (e) => {
+        const id = e.target.id
+        navigate(`/admin/updateproduct/${id}`)
+
+    }
+    const handleDelete = async (e) => {
+        const jwt = localStorage.getItem("jwt");
+        try {
+            const response = await fetch(`http://localhost:9875/admin/deleteproduct/${e.target.id}`, {
+                method: 'GET',
+                headers: { authorization: `Bearer ${jwt}`,"Content-Type": "application/json" }
+            })
+            const data = await response.json()
+            console.log(data)
+            getproducts()
+        }
+        catch(err){
+            console.log(err)
+        }
+
 
     }
 
@@ -64,19 +84,14 @@ const Admin = () => {
             <section>
                 <h3>Articles</h3>
                 <main>
-                    <a href="/admin/createproduct">CRER UN PRODUIT</a>
+                    <Link to="/admin/createproduct">CRER UN PRODUIT</Link>
                     {products.map((product, i) => {
                         return (
-                            <form key={i}>
-                                <fieldset>
-                                <legend><a href={`/product/${i}`}>Article n°{i}</a></legend>
-                                <input type="text" id={i} name="name" value={product.name} onChange={handleChange}/>
-                                <textarea id={i} name="description" onChange={handleChange} value={product.description}/>
-                                <input id={i} name="quantity" type="number" value={product.quantity} onChange={handleChange}/>
-                                <input id={i} type="checkbox" onChange={handleChange}/>
-                                <input id={i} type="submit" value="APPLIQUER" onClick={handleClick}/>
-                                </fieldset>
-                            </form>
+                            <div className="productAdmin"key={i}>
+                                <h4>{product.name}</h4>
+                                <button id={i} onClick={handleUpdate}>MODIFIER</button>
+                                <button id={i} onClick={handleDelete}>SUPPRIMER</button>
+                            </div>
                         );
                     })}
                 </main>

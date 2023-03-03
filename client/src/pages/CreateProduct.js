@@ -1,65 +1,60 @@
 import { useEffect, useState } from "react"
-import axios from "axios";
+import { useNavigate } from "react-router-dom"
 
 const CreateProduct = () => {
 
-    const [product,setProduct] = useState()
-    const [name,setName] = useState("")
-    const [description,setDescription] = useState("")
-    const [quantity,setQuantity] = useState(0)
-    const [price,setPrice] = useState(0)
+    const navigate = useNavigate()
 
+    const [product,setProduct] = useState({
+        name: "",
+        description: "",
+        quantity: 0,
+        price: 0
+    })
 
-    const handleClick = (e) => {
-        e.preventDefault()
-        const newProduct = {
-            name,
-            description,
-            quantity,
-            price
-        }
-        setProduct(newProduct)
-        const jwt = localStorage.getItem("jwt");
-        fetch("http://localhost:9875/admin/createproduct", {
-            method: 'POST',
-            headers: { authorization: `Bearer ${jwt}`,"Content-Type": "application/json" },
-            body: JSON.stringify(product)
-        })
-            .then((resp) => console.log(resp))
-            .then((data) => console.log(data))
-            .catch((e) => console.log(e));
-    }
 
     const handleChange = (e) => {
-
         const value = e.target.value
-        const prop = e.target.name
-        if(prop==="name"){
-            setName(value)
+        const name = e.target.name
+        setProduct({...product, [name]: value})
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const jwt = localStorage.getItem("jwt");
+
+        try {
+            const response = await fetch("http://localhost:9875/admin/createproduct", {
+                method: 'POST',
+                headers: { authorization: `Bearer ${jwt}`,"Content-Type": "application/json" },
+                body: JSON.stringify(product)
+            })
+            const data = await response.json()
+            console.log(data)
+            navigate("/admin")
         }
-        else if(prop==="description"){
-            setDescription(value)
-        }
-        else if(prop==="quantity"){
-            setQuantity(value)
-        }
-        else{
-            setPrice(value)
+        catch(err){
+            console.log(err)
         }
     }
+
+    /*useEffect(() => {
+        console.log(product)
+    }, [product])*/
 
 
     return (
         <>
             <h2>Créer un produit</h2>
-            <form method="post" >
+            <form method="post" onSubmit={handleSubmit}>
             <fieldset>
                 <legend>Nouveau produit</legend>
-                <input type="text" name="name" value={name} placeholder="titre" required onChange={handleChange} />
-                <textarea name="description" value={description} placeholder="description" required onChange={handleChange}/>
+                <input type="text" name="name" value={product.name} placeholder="titre" required onChange={handleChange} />
+                <input type="file" />
+                <textarea name="description" value={product.description} placeholder="description" required onChange={handleChange}/>
                 <input type="number" name="quantity" placeholder="quantité" onChange={handleChange}/>
                 <input type="number" name="price" placeholder="prix" onChange={handleChange}/>
-                <input type="submit" value="Ajouter le produit" onClick={handleClick}/> 
+                <input type="submit" value="Ajouter le produit"/> 
             </fieldset>
         </form>
         </>
