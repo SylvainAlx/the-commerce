@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { serialize } from 'object-to-formdata';
 
 const UpdateProduct = () => {
 
     const id = useParams().id;
+    const navigate = useNavigate()
     
     const [product,setProduct] = useState({
         name: "",
@@ -13,8 +14,8 @@ const UpdateProduct = () => {
         price: 0
     })
 
-    const formDataNulle = new FormData()
-    formDataNulle.append("name","toto")
+    //const formDataNulle = new FormData()
+    //formDataNulle.append("name","toto")
 
 
     const handleChange = (e) => {
@@ -30,11 +31,12 @@ const UpdateProduct = () => {
             const formData = serialize(product)
             const response = await fetch(`http://localhost:9875/admin/updateproduct/${id}`, {
                 method: 'POST',
-                headers: { authorization: `Bearer ${jwt}`,"Content-Type": "multipart/form-data" },
-                body: formDataNulle
+                headers: { authorization: `Bearer ${jwt}`},
+                body: formData
             })
             const data = await response.json()
             console.log(data)
+            navigate("/admin")
         }
         catch(err){
             console.log(err)

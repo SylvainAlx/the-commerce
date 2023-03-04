@@ -55,24 +55,29 @@ export const updateProduct = async (req,res) => {
     form.parse(req, function (err, fields, files) {
 
         try {
-            console.log(fields)
-            //gestion de l'image
-            const extension = files.images.originalFilename.split(".").pop();
-            let oldpath = files.images.filepath;
-            let newpath ="public/images/" + files.images.newFilename + "." + extension;
-            fs.copyFile(oldpath, newpath, function (err) {
-                if (err) {
-                    res.send(err);
-                }
-            });
         
             const newProduct = {
                 name:fields.name,
-                images:files.images.newFilename + "." + extension,
                 description:fields.description,
                 quantity:fields.quantity,
                 price:fields.price
             }
+
+            /*if(files!=={}){
+
+                const extension = files.images.originalFilename.split(".").pop();
+                let oldpath = files.images.filepath;
+                let newpath ="public/images/" + files.images.newFilename + "." + extension;
+                fs.copyFile(oldpath, newpath, function (err) {
+                    if (err) {
+                        res.send(err);
+                    }
+                });
+                newProduct.images = files.images.newFilename + "." + extension;
+            }*/
+            
+
+
             const update = async () => {
                 try {
                     const i = req.params.id;
