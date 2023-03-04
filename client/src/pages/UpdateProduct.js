@@ -8,20 +8,23 @@ const UpdateProduct = () => {
     const navigate = useNavigate()
     
     const [product,setProduct] = useState({
-        name: "",
-        description: "",
-        quantity: 0,
-        price: 0
+        name:"",
+        images:[],
+        description:"",
+        quantity:0,
+        price:0
     })
-
-    //const formDataNulle = new FormData()
-    //formDataNulle.append("name","toto")
 
 
     const handleChange = (e) => {
         const value = e.target.value
         const name = e.target.name
-        setProduct({...product, [name]: value})
+        if(name!=="images"){
+            setProduct({...product, [name]: value})
+        }
+        else{
+            setProduct({...product, [name]: e.target.files[0]})
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -29,6 +32,7 @@ const UpdateProduct = () => {
         const jwt = localStorage.getItem("jwt");
         try {
             const formData = serialize(product)
+            
             const response = await fetch(`http://localhost:9875/admin/updateproduct/${id}`, {
                 method: 'POST',
                 headers: { authorization: `Bearer ${jwt}`},
@@ -62,7 +66,7 @@ const UpdateProduct = () => {
                         <input type="text" name="name" value={product.name} onChange={handleChange}/>
                     </label>
                     <label>Image
-                        <input type="file" name="images"/>
+                        <input type="file" name="images" onChange={handleChange}/>
                     </label>
                     <label>Description
                         <textarea name="description" value={product.description} onChange={handleChange}/>

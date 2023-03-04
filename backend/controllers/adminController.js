@@ -54,7 +54,7 @@ export const updateProduct = async (req,res) => {
     
     form.parse(req, function (err, fields, files) {
 
-        try {
+        try { 
         
             const newProduct = {
                 name:fields.name,
@@ -63,28 +63,29 @@ export const updateProduct = async (req,res) => {
                 price:fields.price
             }
 
-            /*if(files!=={}){
-
-                const extension = files.images.originalFilename.split(".").pop();
-                let oldpath = files.images.filepath;
-                let newpath ="public/images/" + files.images.newFilename + "." + extension;
-                fs.copyFile(oldpath, newpath, function (err) {
-                    if (err) {
-                        res.send(err);
-                    }
-                });
-                newProduct.images = files.images.newFilename + "." + extension;
-            }*/
-            
-
-
             const update = async () => {
+
                 try {
+
                     const i = req.params.id;
                     const products = await Product.find()
-                    const ID = products[i]._id
-                    const product = await Product.findByIdAndUpdate(ID, newProduct);
-                    res.status(201)
+                    const product = products[i]
+
+                    if(files.images){
+                            //ajout de l'image
+                            const extension = files.images.originalFilename.split(".").pop();
+                            let oldpath = files.images.filepath;
+                            let newpath ="public/images/" + files.images.newFilename + "." + extension;
+                            fs.copyFile(oldpath, newpath, function (err) {
+                                if (err) {
+                                    res.send(err);
+                                }
+                            });
+                            product.images.push(files.images.newFilename + "." + extension);
+                    }
+
+                    const findAndUpdate = await Product.findByIdAndUpdate(product._id, newProduct);
+                    res.send(JSON.stringify(product))
                 }
                 catch(err){
                     res.send(err)
