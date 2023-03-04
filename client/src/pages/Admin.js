@@ -88,9 +88,12 @@ const Admin = () => {
                     {products.map((product, i) => {
                         return (
                             <div className="productAdmin"key={i}>
-                                <h4>{product.name}</h4>
-                                <button id={i} onClick={handleUpdate}>MODIFIER</button>
-                                <button id={i} onClick={handleDelete}>SUPPRIMER</button>
+                                <h5>{product.name}</h5>
+                                <div>
+                                    <button id={i} onClick={handleUpdate}>MODIFIER</button>
+                                    <button id={i} onClick={handleDelete}>SUPPRIMER</button>
+                                </div>
+                                
                             </div>
                         );
                     })}

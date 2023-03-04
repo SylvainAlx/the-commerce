@@ -19,6 +19,9 @@ const Product = () => {
     return (
         <>
         <h2>{product.name}</h2>
+        {product.images !== undefined && 
+        <img src={`http://localhost:9875/images/${product.images[0]}`} alt={product.images} width="300px"/>
+        }
         <h3>{product.description}</h3>
         </>
     )

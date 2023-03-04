@@ -85,7 +85,7 @@ export const updateProduct = async (req,res) => {
                     }
 
                     const findAndUpdate = await Product.findByIdAndUpdate(product._id, newProduct);
-                    res.send(JSON.stringify(product))
+                    res.send(JSON.stringify({"mise à jour":"ok"}))
                 }
                 catch(err){
                     res.send(err)

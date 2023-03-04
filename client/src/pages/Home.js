@@ -22,13 +22,6 @@ const Home = () => {
                     return (
                         <article key={i}>
                             <h4><Link to={`/product/${i}`}>{product.name}</Link></h4>
-                            <div>
-                                {product.images.forEach((image,i)=>{
-                                    return (
-                                        <img src={`http://localhost:9875/images/${product.images[i]}`} alt={image} width="100px"/>
-                                    )
-                                })}
-                            </div>
                             <h5>{product.price}€</h5>
                             <em>Quantité : {product.quantity}</em>
                         </article>
