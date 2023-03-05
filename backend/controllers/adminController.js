@@ -14,20 +14,41 @@ export const getUsers = async (req, res) => {
 };
 
 export const createProduct = (req,res) => {
-    console.log(req.body)
+    
+    const form = formidable();
+    
+    form.parse(req, function (err, fields, files) {
 
-    try {
-        const product = new Product({
-            name:req.body.name,
-            description:req.body.description,
-            quantity:req.body.quantity,
-            price:req.body.price
-        });
-        product.save();
-        res.send(product)
-    } catch(err) {
-        res.send(err)
-    }
+        try {
+            const product = new Product({
+                name:fields.name,
+                description:fields.description,
+                quantity:fields.quantity,
+                price:fields.price
+            });
+
+            if(files.images){
+                //ajout de l'image
+                const extension = files.images.originalFilename.split(".").pop();
+                let oldpath = files.images.filepath;
+                let newpath ="public/images/" + files.images.newFilename + "." + extension;
+                fs.copyFile(oldpath, newpath, function (err) {
+                    if (err) {
+                        res.send(err);
+                    }
+                });
+                product.images.push(files.images.newFilename + "." + extension);
+            }
+
+            product.save();
+            res.send(JSON.stringify({"nouveau produit":product}))
+
+        } catch(err) {
+            res.send(err)
+        }
+    })
+
+    
 }
 
 export const deleteProduct = async (req,res) => {
@@ -37,7 +58,7 @@ export const deleteProduct = async (req,res) => {
         const ID = products[i]._id
         Product.findByIdAndDelete(ID, (err) => {
             if (err) res.send(err);
-            res.status(200);
+            res.send(JSON.stringify({"produit":"supprimé"}))
         });
 
     }
@@ -85,7 +106,7 @@ export const updateProduct = async (req,res) => {
                     }
 
                     const findAndUpdate = await Product.findByIdAndUpdate(product._id, newProduct);
-                    res.send(JSON.stringify({"mise à jour":"ok"}))
+                    res.send(JSON.stringify({"produit":"mise à jour ok"}))
                 }
                 catch(err){
                     res.send(err)

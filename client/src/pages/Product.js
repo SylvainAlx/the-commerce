@@ -20,7 +20,7 @@ const Product = () => {
         <>
         <h2>{product.name}</h2>
         {product.images !== undefined && 
-        <img src={`http://localhost:9875/images/${product.images[0]}`} alt={product.images} width="300px"/>
+        <img src={`http://localhost:9875/images/${product.images[0]}`} alt={product.images} width="60%"/>
         }
         <h3>{product.description}</h3>
         </>

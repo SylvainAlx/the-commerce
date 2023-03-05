@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { serialize } from 'object-to-formdata';
 
 const CreateProduct = () => {
 
@@ -7,6 +8,7 @@ const CreateProduct = () => {
 
     const [product,setProduct] = useState({
         name: "",
+        images:[],
         description: "",
         quantity: 0,
         price: 0
@@ -16,7 +18,12 @@ const CreateProduct = () => {
     const handleChange = (e) => {
         const value = e.target.value
         const name = e.target.name
-        setProduct({...product, [name]: value})
+        if(name!=="images"){
+            setProduct({...product, [name]: value})
+        }
+        else{
+            setProduct({...product, [name]: e.target.files[0]})
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -24,10 +31,12 @@ const CreateProduct = () => {
         const jwt = localStorage.getItem("jwt");
 
         try {
+            const formData = serialize(product)
+
             const response = await fetch("http://localhost:9875/admin/createproduct", {
                 method: 'POST',
-                headers: { authorization: `Bearer ${jwt}`,"Content-Type": "application/json" },
-                body: JSON.stringify(product)
+                headers: { authorization: `Bearer ${jwt}`},
+                body: formData
             })
             const data = await response.json()
             console.log(data)
@@ -46,14 +55,24 @@ const CreateProduct = () => {
     return (
         <>
             <h2>Créer un produit</h2>
-            <form method="post" onSubmit={handleSubmit}>
+            <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
             <fieldset>
                 <legend>Nouveau produit</legend>
-                <input type="text" name="name" value={product.name} placeholder="titre" required onChange={handleChange} />
-                <input type="file" />
-                <textarea name="description" value={product.description} placeholder="description" required onChange={handleChange}/>
-                <input type="number" name="quantity" placeholder="quantité" onChange={handleChange}/>
-                <input type="number" name="price" placeholder="prix" onChange={handleChange}/>
+                <label>Titre
+                    <input type="text" name="name" value={product.name} onChange={handleChange}/>
+                </label>
+                <label>Image
+                    <input type="file" name="images" onChange={handleChange}/>
+                </label>
+                <label>Description
+                    <textarea name="description" value={product.description} onChange={handleChange}/>
+                </label>
+                <label>Quantité
+                    <input type="number" name="quantity" value={product.quantity} onChange={handleChange}/>
+                </label>
+                <label>Prix
+                    <input type="number" name="price" value={product.price} onChange={handleChange}/>
+                </label>
                 <input type="submit" value="Ajouter le produit"/> 
             </fieldset>
         </form>
