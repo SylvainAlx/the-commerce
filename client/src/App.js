@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./layouts/Header.js";
+import Footer from "./layouts/Footer.js";
 import Register from "./pages/Register.js";
 import Login from "./pages/Login.js";
 import Home from "./pages/Home.js";
@@ -8,7 +9,7 @@ import Product from "./pages/Product.js";
 import CreateProduct from "./pages/CreateProduct.js";
 import UpdateProduct from "./pages/UpdateProduct.js";
 import "./assets/styles/app.scss";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./store/slices/userSlice.js";
 
@@ -48,6 +49,7 @@ const App = () => {
                         </>
                     )}
                 </Routes>
+                <Footer />
             </BrowserRouter>
         </div>
     );

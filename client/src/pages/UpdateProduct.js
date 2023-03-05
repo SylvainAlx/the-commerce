@@ -58,25 +58,18 @@ const UpdateProduct = () => {
 
     return (
         <>
-            <h2>MODIFICATION</h2>
+            <h2>Modification</h2>
             <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>modifier le produit</legend>
-                    <label>Titre
-                        <input type="text" name="name" value={product.name} onChange={handleChange}/>
-                    </label>
-                    <label>Image
-                        <input type="file" name="images" onChange={handleChange}/>
-                    </label>
-                    <label>Description
-                        <textarea name="description" value={product.description} onChange={handleChange}/>
-                    </label>
-                    <label>Quantité
-                        <input type="number" name="quantity" value={product.quantity} onChange={handleChange}/>
-                    </label>
-                    <label>Prix
-                        <input type="number" name="price" value={product.price} onChange={handleChange}/>
-                    </label>
+                    <input type="text" name="name" value={product.name} placeholder="titre" onChange={handleChange}/>
+                    {product.images !== undefined && 
+                                <img src={`http://localhost:9875/images/${product.images[0]}`} alt={product.images} width="100%"/>
+                    }
+                    <input type="file" name="images" onChange={handleChange}/>
+                    <textarea name="description" value={product.description} placeholder="description" rows={10} onChange={handleChange}/>
+                    <input type="number" name="quantity" value={product.quantity} placeholder="quantité" onChange={handleChange}/>
+                    <input type="number" name="price" value={product.price} placeholder="quantité" onChange={handleChange}/>
                     <input type="submit" value="APPLIQUER" />
                 </fieldset>
             </form>

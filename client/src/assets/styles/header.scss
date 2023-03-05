@@ -1,26 +1,23 @@
+@import "variables";
+
 header {
     display: flex;
     flex-direction: column;
-    background: url("../images/banner.jpeg");
+    background: url("../images/banner2.jpg") center;
     padding: 20px;
     h1 {
+        margin: 10px;
         text-align: center;
         color: white;
+        font-size: 70px;
+        font-family: $font-hand;
     }
     nav {
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
         gap: 20px;
-        .navlink {
-            text-align: center;
-            width: 100px;
-            line-height: 40px;
-            border-radius: 10px;
-            color: white;
-            background-color: #529e3b;
-            text-decoration: none;
-            cursor: pointer;
-        }
+        
     }
 
 }

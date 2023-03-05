@@ -19,20 +19,23 @@ const Header = () => {
 
     return (
         <header>
-            <h1>Thé Commerce !</h1>
+            <h1>Tea Shop</h1>
             <nav>
-                <Link className="navlink" to="/">accueil</Link>
+                <Link className="navlink" to="/">produits</Link>
+                {user.isAdmin && 
+                    <Link className="navlink" to="/admin">administration</Link>
+                }
                 {!user.email ? (
                     <>
                         <Link className="navlink" to="/login">se connecter</Link>
                         <Link className="navlink" to="/register">s'inscrire</Link>
                     </>
                 ):(
+                    <>
+                    <Link className="navlink" to="/cart">panier</Link>
                     <div className="navlink" onClick={handleClick}>se déconnecter</div>
+                    </>
                 )
-                }
-                {user.isAdmin && 
-                    <Link className="navlink" to="/admin">administration</Link>
                 }
             </nav>
         </header>

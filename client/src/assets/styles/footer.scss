@@ -1,0 +1,12 @@
+@import "variables";
+
+footer {
+    height: 100px;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: white;
+    background-color: $color-darkgreen;
+}

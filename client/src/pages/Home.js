@@ -21,12 +21,13 @@ const Home = () => {
                 {products.map((product,i) => {
                     return (
                         <article key={i}>
-                            <h4><Link to={`/product/${i}`}>{product.name}</Link></h4>
+                            <Link to={`/product/${i}`}><h4>{product.name}</h4>
                             {product.images !== undefined && 
                                 <img src={`http://localhost:9875/images/${product.images[0]}`} alt={product.images} width="100%"/>
                             }
+                            </Link>
                             <h5>{product.price}€</h5>
-                            <em>Quantité : {product.quantity}</em>
+                            <em>Disponibilité : {product.quantity}</em>
                         </article>
                     )
                 })}
