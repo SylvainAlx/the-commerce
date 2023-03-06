@@ -6,8 +6,7 @@ const cartSchema = mongoose.Schema({
         ref: 'User'
     },
     products: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
+        type: []
     }
 },{
     timestamps: true

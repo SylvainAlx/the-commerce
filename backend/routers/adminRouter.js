@@ -5,7 +5,7 @@ const adminRouter = express.Router();
 
 adminRouter.get("/getusers", getUsers);
 adminRouter.post("/createproduct",createProduct)
-adminRouter.get("/deleteproduct/:id",deleteProduct)
+adminRouter.delete("/deleteproduct/:id",deleteProduct)
 adminRouter.post("/updateproduct/:id",updateProduct)
 
 export default adminRouter;

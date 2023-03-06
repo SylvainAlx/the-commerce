@@ -3,6 +3,7 @@ import express from "express";
 import authRouter from "./routers/authRouter.js";
 import adminRouter from "./routers/adminRouter.js";
 import publicRouter from "./routers/publicRouter.js";
+import cartRouter from "./routers/cartRouter.js";
 import cors from "cors";
 import { verifyJwt, isAdmin } from "./middlewares/authMiddleware.js";
 //import bodyParser from "body-parser";
@@ -36,6 +37,8 @@ mongoose.connection.on("open", () => {
     app.use("/auth", authRouter);
     app.use("/admin", [verifyJwt], [isAdmin], adminRouter);
     app.use("/public", publicRouter)
+    app.use("/cart",[verifyJwt], cartRouter)
+
     console.log("connexion à la base de données");
 });
 

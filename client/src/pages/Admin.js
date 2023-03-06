@@ -40,7 +40,7 @@ const Admin = () => {
         const jwt = localStorage.getItem("jwt");
         try {
             const response = await fetch(`http://localhost:9875/admin/deleteproduct/${e.target.id}`, {
-                method: 'GET',
+                method: 'DELETE',
                 headers: { authorization: `Bearer ${jwt}`,"Content-Type": "application/json" }
             })
             const data = await response.json()

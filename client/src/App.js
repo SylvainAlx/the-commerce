@@ -8,6 +8,7 @@ import Admin from "./pages/Admin.js";
 import Product from "./pages/Product.js";
 import CreateProduct from "./pages/CreateProduct.js";
 import UpdateProduct from "./pages/UpdateProduct.js";
+import Cart from "./pages/Cart.js";
 import "./assets/styles/app.scss";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,6 +42,7 @@ const App = () => {
                     <Route path="/product/:id" element={<Product />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/cart" element={<Cart />} />
                     {user.isAdmin && (
                         <>
                         <Route path="/admin" element={<Admin />} />
